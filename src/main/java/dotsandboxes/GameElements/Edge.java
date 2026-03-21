@@ -15,7 +15,7 @@ public class Edge {
     }
     public boolean edgeClaimed(){
         return edgeClaimed;
-    }
+    } //Encapsulation keeps the claimed state private, protecting the internal state and using methods to access it
 
     public Dot getEdgeStart() {
         return edgeStart;
@@ -25,3 +25,4 @@ public class Edge {
         return edgeEnd;
     }
 }
+//Foundational state to track if edges during the game has been claimed by a player, so that the other player can not use it

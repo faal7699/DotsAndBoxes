@@ -16,3 +16,4 @@ public class Dot {
         return column;
     }
 }
+//Another foundational class that represents a coordinate to contribute towards creating an edge for the game
