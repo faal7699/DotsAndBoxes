@@ -1,6 +1,6 @@
 package dotsandboxes;
 
-public class Player {
+abstract public class Player {
     private final String name;
     private int score;
     public Player(String name){
@@ -16,6 +16,6 @@ public class Player {
     public void addScore(){
         this.score += 1;
     }
-
+    public abstract void StartTurn();
 
 }
