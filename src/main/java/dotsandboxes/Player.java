@@ -16,6 +16,6 @@ abstract public class Player {
     public void addScore(){
         this.score += 1;
     }
-    public abstract void StartTurn();
+    public abstract void startTurn();
 
 }

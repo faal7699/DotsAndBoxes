@@ -9,7 +9,7 @@ public class PlayerCharacter extends Player {
     }
 
     @Override
-    public void StartTurn() {
+    public void startTurn() {
         logger.info(getName() + ", it is your turn!");
     }
 }

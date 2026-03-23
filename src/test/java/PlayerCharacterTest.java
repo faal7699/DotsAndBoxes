@@ -9,7 +9,7 @@ public class PlayerCharacterTest {
     @Test
     void userStartTurn(){
         Player pc = playerFactory.createPlayer("John Doe");
-      pc.StartTurn();
+      pc.startTurn();
         assertTrue(true);
     }
 }
