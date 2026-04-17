@@ -2,10 +2,10 @@ package dotsandboxes;
 import dotsandboxes.GameElements.Dot;
 import dotsandboxes.GameElements.Edge;
 import dotsandboxes.GameElements.Box;
+import java.io.Serializable;
+import java.util.logging.Logger;
 
-
-
-public class Grid {
+public class Grid implements Serializable{
     private final int rows;
     private final int columns;
     private final Edge[][] horizontalEdges;
@@ -16,7 +16,7 @@ public class Grid {
 
 
 
-    Grid(int rows,int columns){
+    private Grid(int rows,int columns){
         this.rows = rows;
         this.columns = columns;
         this.horizontalEdges = new Edge[rows + 1][columns];
@@ -56,6 +56,37 @@ public class Grid {
     public int getColumns() {
         return columns;
     }
+    public Box[][] getBoxes(){return boxes;}
+    public Edge[][] getHorizontalEdges() {return horizontalEdges;}
+    public Edge[][] getVerticalEdges() {return verticalEdges;}
+    public static Builder getNewBuilder(){return new Builder();}
+    public static class Builder {
+
+        private final static int MIN_ROWS =3;
+        private final static int MIN_COLUMNS =3;
+        private static final Logger logger = Logger.getLogger(Builder.class.getName());
+        private int rows = MIN_ROWS;
+        private int columns = MIN_COLUMNS;
+        private Builder(){}
+        public Builder setColumns(int columns){this.columns= columns; return this;}
+        public Builder setRows(int rows){
+            this.rows= rows;
+            return this;
+        }
+        public Grid build(){
+            if(rows<MIN_ROWS || columns<MIN_COLUMNS){
+                logger.warning("Size is too small, set up 3x3 grid instead.");
+                rows = MIN_ROWS;
+                columns = MIN_COLUMNS;
+            }
+            return new Grid(rows,columns);
+        }
+
+
+
+
+    }
+
 
 
 

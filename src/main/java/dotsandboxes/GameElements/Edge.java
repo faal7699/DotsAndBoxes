@@ -1,6 +1,6 @@
 package dotsandboxes.GameElements;
-
-public class Edge {
+import java.io.Serializable;
+public class Edge implements Serializable{
     private final Dot edgeStart;
     private final Dot edgeEnd;
     private boolean edgeClaimed;

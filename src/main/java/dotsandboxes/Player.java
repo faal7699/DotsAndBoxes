@@ -1,6 +1,6 @@
 package dotsandboxes;
-
-abstract public class Player {
+import java.io.Serializable;
+abstract public class Player implements Serializable{
     private final String name;
     private int score;
     public Player(String name){
@@ -15,6 +15,9 @@ abstract public class Player {
     }
     public void addScore(){
         this.score += 1;
+    }
+    public void resetScore(){
+        this.score = 0;
     }
     public abstract void startTurn();
 
