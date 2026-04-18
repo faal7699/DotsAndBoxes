@@ -16,7 +16,7 @@ public class Grid implements Serializable{
 
 
 
-    private Grid(int rows,int columns){
+    Grid(int rows, int columns){
         this.rows = rows;
         this.columns = columns;
         this.horizontalEdges = new Edge[rows + 1][columns];
