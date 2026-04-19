@@ -122,6 +122,14 @@ public class DotsAndBoxes implements Serializable, IDotsAndBoxes{
         return grid;
     }
 
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
     @Override
     public void reset() {
         this.grid = Grid.getNewBuilder().setRows(rows).setColumns(columns).build();
