@@ -1,14 +1,16 @@
 import dotsandboxes.Player;
-import dotsandboxes.PlayerFactory;
+import dotsandboxes.PlayerCharacter;
 import org.junit.jupiter.api.Test;
+
+import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlayerCharacterTest {
-    PlayerFactory playerFactory = new PlayerFactory();
+
     @Test
     void userStartTurn(){
-        Player pc = playerFactory.createPlayer("John Doe");
+        Player pc = new PlayerCharacter("John Doe", Color.BLACK);
       pc.startTurn();
         assertTrue(true);
     }

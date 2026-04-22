@@ -1,6 +1,6 @@
 package dotsandboxes.GameElements;
-import java.io.Serializable;
-public class Dot implements Serializable{
+
+public class Dot {
     private final int row;
     private final int column;
     public Dot(int row, int column){

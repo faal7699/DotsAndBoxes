@@ -1,13 +1,13 @@
 package dotsandboxes;
 import dotsandboxes.GameElements.Box;
 import dotsandboxes.GameElements.Edge;
+import dotsandboxes.GameElements.Grid;
 import dotsandboxes.observers.EventType;
 import dotsandboxes.strategy.TurnStrategy;
 
 import java.util.List;
 import java.util.logging.Logger;
-import java.io.Serializable;
-public class DotsAndBoxes implements Serializable, IDotsAndBoxes{
+public class DotsAndBoxes implements IDotsAndBoxes{
     private static final Logger logger = Logger.getLogger(DotsAndBoxes.class.getName());
     private Grid grid;
     private int rows;

@@ -1,11 +1,25 @@
-Design patterns: 
-1. Factory Pattern: Used to create game objects like players and grids
-   Used in PlayerFactory and GridFactory classes. In PlayerFactory we create players and in GridFactory we create grids with multiple sizes.
-   With these factories we can avoid creating objects with new and scatter that in the code. 
-2. Observer Pattern: Will be Used for Game class(subject) and a GameObserver interface that will be used by our Swing UI. 
-   Game notifies observers when events happen(move/score change) and Swing UI will observe and respond such as displaying the update.
-3. Facade Pattern: Used to hide complex operations being a simple interface. 
-   Used in Game class, wrapping Player, Grid and score logic. The UI will only need to call methods in Game like takeTurn() without needing to know about all separate classes. 
+
+# Dots and Boxes And Java Swing UI- Fahad And Roberto
+
+Team members' names:
+
+    Names: <Fahad Alshadoukhi, Roberto Sierra>
+    Java Version: <25.0.2>
+
+Design patterns:
+1. Observer Pattern: We use the subject EventBus class similar to previous assignments, where UIGame attaches to it, and receives updates/events 
+where it then updates the board, these events are ones that include a box being captured, player playing a turn, game is over
+and claiming an edge. Our interface is IDotsAndBoxesObserver for observers.
+2. Command Pattern: We implement a ICommand interface that both NewGameCommand and QuitGameCommand implement it, these commands are used
+by the UIGame for creating a new game or quitting current game.
+3. Builder Pattern: In our Grid class we use a builder, similar to the one we use for a maze in Polymorphia homework, Grid builder builds
+the grid with it's builder methods such as setRows and setColumns and then we return that instance of build to use it for our needed grid.
+4. Strategy Pattern: We have two strategies, DefaultTurnStrategy which is the standard way of playing dots and boxes, where you get another
+turn if you capture a box and we also have TwoTurnStrategy where each player gets two turns in general. TurnStrategy interface gives the methods
+used by the strategies and we inject it to DotsAndBoxes, ensuring we use dependency injection
+5. Although we only need four patterns, we started with implementing a CommandFactory and we did not remove it as we thought it would be helpful 
+for decoupling, as it creates a NewGameCommand and a QuitGameCommand, and then UI uses the factory
+to create those commands.
 
 
 

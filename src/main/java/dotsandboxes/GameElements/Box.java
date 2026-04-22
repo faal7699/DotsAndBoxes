@@ -1,8 +1,7 @@
 package dotsandboxes.GameElements;
 
 import dotsandboxes.Player;
-import java.io.Serializable;
-public class Box implements Serializable{
+public class Box {
     //This is a foundational class because it determines if a box is claimed or not based on the four edges connecting to each other once it is completed, it has a meaningful contribution towards the game's state
     private final Edge top;
     private final Edge bottom;

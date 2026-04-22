@@ -1,11 +1,7 @@
-package dotsandboxes;
-import dotsandboxes.GameElements.Dot;
-import dotsandboxes.GameElements.Edge;
-import dotsandboxes.GameElements.Box;
-import java.io.Serializable;
+package dotsandboxes.GameElements;
 import java.util.logging.Logger;
 
-public class Grid implements Serializable{
+public class Grid {
     private final int rows;
     private final int columns;
     private final Edge[][] horizontalEdges;
@@ -16,7 +12,7 @@ public class Grid implements Serializable{
 
 
 
-    Grid(int rows, int columns){
+    private Grid(int rows, int columns){
         this.rows = rows;
         this.columns = columns;
         this.horizontalEdges = new Edge[rows + 1][columns];

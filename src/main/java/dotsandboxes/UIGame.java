@@ -2,6 +2,7 @@ package dotsandboxes;
 
 import dotsandboxes.GameElements.Box;
 import dotsandboxes.GameElements.Edge;
+import dotsandboxes.GameElements.Grid;
 import dotsandboxes.commands.CommandFactory;
 import dotsandboxes.commands.ICommand;
 import dotsandboxes.observers.EventType;
@@ -62,8 +63,6 @@ public class UIGame implements IDotsAndBoxesObserver {
     private final JLabel turnLabel;
     private final JLabel scoreLabel;
     private final JComboBox<String> sizeSelector;
-    private final GridFactory gridFactory;
-    private final PlayerFactory playerFactory;
     private final CommandFactory commandFactory;
     private final Map<Edge, Color> claimedEdgeColors;
 
@@ -74,8 +73,6 @@ public class UIGame implements IDotsAndBoxesObserver {
         turnLabel = new JLabel();
         scoreLabel = new JLabel();
         sizeSelector = new JComboBox<>(new String[]{SIZE_3, SIZE_5});
-        gridFactory = new GridFactory();
-        playerFactory = new PlayerFactory();
         commandFactory = new CommandFactory();
         claimedEdgeColors = new IdentityHashMap<>();
     }
@@ -212,8 +209,8 @@ public class UIGame implements IDotsAndBoxesObserver {
     private void startNewGame(String size) {
         Grid grid = createGrid(size);
         List<Player> players = Arrays.asList(
-                playerFactory.createPlayer("Player 1"),
-                playerFactory.createPlayer("Player 2")
+                new PlayerCharacter("Player 1",PLAYER_ONE_COLOR),
+                new PlayerCharacter("Player 2",PLAYER_TWO_COLOR)
         );
         game = new DotsAndBoxes(grid, new DefaultTurnStrategy(), players);
         claimedEdgeColors.clear();
@@ -222,9 +219,9 @@ public class UIGame implements IDotsAndBoxesObserver {
 
     private Grid createGrid(String size) {
         if (SIZE_5.equals(size)) {
-            return gridFactory.create5x5Grid();
+            return Grid.getNewBuilder().setRows(5).setColumns(5).build();
         }
-        return gridFactory.create3x3Grid();
+        return Grid.getNewBuilder().setRows(3).setColumns(3).build();
     }
 
     private void resetCurrentGame() {
@@ -424,7 +421,7 @@ public class UIGame implements IDotsAndBoxesObserver {
     }
 
     private Color getPlayerColor(Player player) {
-        return "Player 1".equals(player.getName()) ? PLAYER_ONE_COLOR : PLAYER_TWO_COLOR;
+        return player.getColor();
     }
 
     private Color withAlpha(Color color, int alpha) {
