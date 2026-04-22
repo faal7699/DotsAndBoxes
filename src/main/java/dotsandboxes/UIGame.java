@@ -8,6 +8,8 @@ import dotsandboxes.commands.ICommand;
 import dotsandboxes.observers.EventType;
 import dotsandboxes.observers.IDotsAndBoxesObserver;
 import dotsandboxes.strategy.DefaultTurnStrategy;
+import dotsandboxes.strategy.TurnStrategy;
+import dotsandboxes.strategy.TwoTurnStrategy;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -42,7 +44,10 @@ public class UIGame implements IDotsAndBoxesObserver {
     static Runnable uiStarter = () -> new UIGame().showGame();
 
     private static final String SIZE_3 = "3x3";
+    private static final String SIZE_4 = "4x4";
     private static final String SIZE_5 = "5x5";
+    private static final String DEFAULT_RULES = "Default Rules";
+    private static final String TWO_TURN_RULES = "Two Turn Rules";
 
     private static final int DOT_SIZE = 10;
     private static final int CELL_SIZE = 64;
@@ -63,6 +68,7 @@ public class UIGame implements IDotsAndBoxesObserver {
     private final JLabel turnLabel;
     private final JLabel scoreLabel;
     private final JComboBox<String> sizeSelector;
+    private final JComboBox<String> strategySelector;
     private final CommandFactory commandFactory;
     private final Map<Edge, Color> claimedEdgeColors;
 
@@ -72,7 +78,8 @@ public class UIGame implements IDotsAndBoxesObserver {
         boardPanel = new BoardPanel();
         turnLabel = new JLabel();
         scoreLabel = new JLabel();
-        sizeSelector = new JComboBox<>(new String[]{SIZE_3, SIZE_5});
+        sizeSelector = new JComboBox<>(new String[]{SIZE_3, SIZE_4, SIZE_5});
+        strategySelector = new JComboBox<>(new String[]{DEFAULT_RULES, TWO_TURN_RULES});
         commandFactory = new CommandFactory();
         claimedEdgeColors = new IdentityHashMap<>();
     }
@@ -161,11 +168,15 @@ public class UIGame implements IDotsAndBoxesObserver {
         leftControls.setOpaque(false);
         JLabel boardLabel = new JLabel("Board:");
         boardLabel.setForeground(MUTED_TEXT);
+        JLabel rulesLabel = new JLabel("Rules:");
+        rulesLabel.setForeground(MUTED_TEXT);
         JButton applyButton = new JButton("Apply Grid");
         styleButton(applyButton);
         applyButton.addActionListener(event -> createNewGameCommand().execute());
         leftControls.add(boardLabel);
         leftControls.add(sizeSelector);
+        leftControls.add(rulesLabel);
+        leftControls.add(strategySelector);
         leftControls.add(applyButton);
 
         JPanel rightControls = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
@@ -212,14 +223,24 @@ public class UIGame implements IDotsAndBoxesObserver {
                 new PlayerCharacter("Player 1",PLAYER_ONE_COLOR),
                 new PlayerCharacter("Player 2",PLAYER_TWO_COLOR)
         );
-        game = new DotsAndBoxes(grid, new DefaultTurnStrategy(), players);
+        game = new DotsAndBoxes(grid, createTurnStrategy(), players);
         claimedEdgeColors.clear();
         refreshBoard();
+    }
+
+    private TurnStrategy createTurnStrategy() {
+        if (TWO_TURN_RULES.equals(strategySelector.getSelectedItem())) {
+            return new TwoTurnStrategy();
+        }
+        return new DefaultTurnStrategy();
     }
 
     private Grid createGrid(String size) {
         if (SIZE_5.equals(size)) {
             return Grid.getNewBuilder().setRows(5).setColumns(5).build();
+        }
+        if (SIZE_4.equals(size)) {
+            return Grid.getNewBuilder().setRows(4).setColumns(4).build();
         }
         return Grid.getNewBuilder().setRows(3).setColumns(3).build();
     }
@@ -256,14 +277,6 @@ public class UIGame implements IDotsAndBoxesObserver {
 
         claimedEdgeColors.put(selectedEdge, getPlayerColor(claimingPlayer));
         refreshBoard();
-
-        if (game.isGameOver()) {
-            Player winner = game.getWinnerPlayer();
-            String message = winner == null
-                    ? "Game over! It's a tie."
-                    : "Game over! " + winner.getName() + " wins.";
-            JOptionPane.showMessageDialog(frame, message, "Dots and Boxes", JOptionPane.INFORMATION_MESSAGE);
-        }
     }
 
     @Override
@@ -271,11 +284,41 @@ public class UIGame implements IDotsAndBoxesObserver {
         if (game == null) {
             return;
         }
+
+        switch (eventType) {
+            case CLAIMED_EDGE:
+            case CAPTURED_BOX:
+            case CHARACTER_PLAYED_TURN:
+                runOnEventDispatch(this::refreshBoard);
+                break;
+            case GAME_DONE:
+                runOnEventDispatch(() -> {
+                    refreshBoard();
+                    Player winner = (eventObject instanceof Player) ? (Player) eventObject : null;
+                    showGameOverMessage(winner);
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void runOnEventDispatch(Runnable action) {
         if (SwingUtilities.isEventDispatchThread()) {
-            refreshBoard();
+            action.run();
             return;
         }
-        SwingUtilities.invokeLater(this::refreshBoard);
+        SwingUtilities.invokeLater(action);
+    }
+
+    private void showGameOverMessage(Player winner) {
+        if (frame == null) {
+            return;
+        }
+        String message = winner == null
+                ? "Game over! It's a tie."
+                : "Game over! " + winner.getName() + " wins.";
+        JOptionPane.showMessageDialog(frame, message, "Dots and Boxes", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private Edge findHorizontalEdge(Grid grid, int x, int y) {

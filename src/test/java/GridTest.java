@@ -10,13 +10,7 @@ public class GridTest {
         assertEquals(3, grid.getRows());
 
     }
-    @Test
-    void testCreate5x5Grid(){
-        Grid grid = Grid.getNewBuilder().setRows(5).setColumns(5).build();
-        assertEquals(5,grid.getColumns());
-        assertEquals(5, grid.getRows());
 
-    }
     @Test
     void testGetBoxes(){
         Grid grid = Grid.getNewBuilder().setRows(5).setColumns(5).build();

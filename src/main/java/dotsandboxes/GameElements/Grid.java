@@ -70,11 +70,6 @@ public class Grid {
             return this;
         }
         public Grid build(){
-            if(rows<MIN_ROWS || columns<MIN_COLUMNS){
-                logger.warning("Size is too small, set up 3x3 grid instead.");
-                rows = MIN_ROWS;
-                columns = MIN_COLUMNS;
-            }
             return new Grid(rows,columns);
         }
 

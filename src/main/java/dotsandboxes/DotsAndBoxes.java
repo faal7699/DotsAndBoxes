@@ -71,7 +71,7 @@ public class DotsAndBoxes implements IDotsAndBoxes{
         }
         isOver = isAllEdgesClaimed();
         if(isOver){
-            EventBus.getInstance().postEvent(EventType.GAME_DONE,currentPlayer);
+            EventBus.getInstance().postEvent(EventType.GAME_DONE,getWinnerPlayer());
         }
         return true;
 
