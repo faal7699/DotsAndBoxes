@@ -6,6 +6,10 @@ Team members' names:
     Names: <Fahad Alshadoukhi, Roberto Sierra>
     Java Version: <25.0.2>
 
+Coverage:
+
+![Coverage](Coverage.png)
+
 Design patterns:
 1. Observer Pattern: We use the subject EventBus class similar to previous assignments, where UIGame attaches to it, and receives updates/events 
 where it then updates the board, these events are ones that include a box being captured, player playing a turn, game is over
